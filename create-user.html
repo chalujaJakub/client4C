@@ -2,13 +2,23 @@
 <html>
   <head>
   <title>Vytvoøení uživatele</title>
+  <script src="scripts/script.js"></script>
   </head>
   <body>
   
     <h1>Vytvoøení uživatele</h1>
     
     <form>
+        <label for="form-name">Name:</label>
+        <input type="text" name="name" id="form-name" />
         
+        <label for="form-city">City:</label>
+        <input type="text" name="city" id="form-city" />
+        
+        <label for="form-grade">Grade:</label>
+        <input type="number" step="0.1" name="grade" id="form-grade" />
+        
+        <input type="button" value="Uložit uživatele" onclick="submitFormWithUser();" />
     </form>
 
   </body>
