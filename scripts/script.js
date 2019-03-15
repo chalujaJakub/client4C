@@ -49,6 +49,19 @@ function retrieveUserById() {
     
 }
 
+function editUser() {
+    document.getElementById("form-name").disabled = false;
+    document.getElementById("form-city").disabled = false;
+    document.getElementById("form-grade").disabled = false;
+    
+    
+    var submitElement = document.createElement("input");
+    submitElement.setAttribute("type", "button");
+    submitElement.setAttribute("value", "Uložit");
+    
+    document.getElementById("edit-user-form").appendChild(submitElement);
+}
+
 function getUrlParameter(parameterName) {
     var url = new URL(document.URL);
     return url.searchParams.get(parameterName);

@@ -8,7 +8,7 @@
     <a href="create-user.html">Vytvoøit uživatele</a>
     <h1>Detail uživatele</h1>
     
-    <form>
+    <form id="edit-user-form">
         <label for="form-name">ID:</label>
         <input type="number" name="userId" id="form-user-id" disabled="disabled" />
     
@@ -21,6 +21,7 @@
         <label for="form-grade">Grade:</label>
         <input type="number" step="0.1" name="grade" id="form-grade" disabled="disabled" />
 
+        <input type="button" value="Editovat" onclick="editUser();">
                 
     </form>
 
