@@ -58,8 +58,30 @@ function editUser() {
     var submitElement = document.createElement("input");
     submitElement.setAttribute("type", "button");
     submitElement.setAttribute("value", "Uložit");
+    submitElement.setAttribute("onclick", "performUserEdit();");
     
     document.getElementById("edit-user-form").appendChild(submitElement);
+    document.getElementById("form-edit").disabled = true;
+}
+
+function performUserEdit() {
+    var xhr = new XMLHttpRequest();
+    var url = SERVER_URL + "/customer/" + getInputValue("form-user-id");
+    xhr.open("PUT", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var json = JSON.parse(xhr.responseText);
+            window.location.href = "user-detail.html?userId=" + json.id;
+        }
+    };
+    var data = JSON.stringify(
+        {
+            "name": getInputValue("form-name"), 
+            "city": getInputValue("form-city"), 
+            "grade": getInputValue("form-grade")
+        });
+    xhr.send(data);
 }
 
 function getUrlParameter(parameterName) {
