@@ -29,6 +29,45 @@ function submitFormWithUser() {
     xhr.send(data);
 }
 
+function getUsers() {  
+    var xhr = new XMLHttpRequest();
+    var url = SERVER_URL + "/customer";
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var json = JSON.parse(xhr.responseText);
+            
+            json.forEach(function(element) {
+                var trElement = document.createElement("tr");
+                
+                var idElement = document.createElement("td");     
+                var hrefElement = document.createElement("a");
+                hrefElement.innerHTML = element.id;
+                hrefElement.href = "user-detail.html?userId=" + element.id;
+                idElement.appendChild(hrefElement);
+                
+                trElement.appendChild(idElement);       
+                var nameElement = document.createElement("td");
+                nameElement.innerHTML = element.name;
+                trElement.appendChild(nameElement);           
+                var cityElement = document.createElement("td");
+                cityElement.innerHTML = element.city;
+                trElement.appendChild(cityElement);            
+                var gradeElement = document.createElement("td");
+                gradeElement.innerHTML = element.grade;
+                trElement.appendChild(gradeElement); 
+                
+                document.getElementById("user-list-table-body").appendChild(trElement);      
+            
+                console.log(element);            
+            });
+            
+        }
+    };
+    xhr.send();
+}
+
 function retrieveUserById() {
     var userId = getUrlParameter("userId");
     
@@ -46,7 +85,6 @@ function retrieveUserById() {
         }
     };
     xhr.send();
-    
 }
 
 function editUser() {
