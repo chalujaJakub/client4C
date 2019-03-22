@@ -119,7 +119,6 @@ function editUser() {
     document.getElementById("form-city").disabled = false;
     document.getElementById("form-grade").disabled = false;
     
-    
     var submitElement = document.createElement("input");
     submitElement.setAttribute("type", "button");
     submitElement.setAttribute("value", "Uložit");
@@ -127,6 +126,23 @@ function editUser() {
     
     document.getElementById("edit-user-form").appendChild(submitElement);
     document.getElementById("form-edit").disabled = true;
+    document.getElementById("form-delete").disabled = true;
+}
+
+function deleteUser() {
+    if (!confirm("Opravdu chcete smazat uživatele?")) {
+        return false;
+    }    
+
+    var xhr = new XMLHttpRequest();
+    var url = SERVER_URL + "/customer/" + getInputValue("form-user-id");
+    xhr.open("DELETE", url, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 204) {
+            window.location.href = "user-list.html";
+        }
+    };
+    xhr.send();    
 }
 
 function performUserEdit() {
