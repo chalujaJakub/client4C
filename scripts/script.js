@@ -1,4 +1,5 @@
 const SERVER_URL = "http://localhost:8080";
+const PAGE_SIZE = 3;
 
 function testovaciFunkce() {
     var elem = document.getElementById("to");
@@ -29,14 +30,21 @@ function submitFormWithUser() {
     xhr.send(data);
 }
 
-function getUsers() {  
+function getUsers(pageNo) {  
     var xhr = new XMLHttpRequest();
-    var url = SERVER_URL + "/customer";
+    var url = SERVER_URL + "/customer?pageNo=" + pageNo;
     xhr.open("GET", url, true);
     xhr.setRequestHeader("Accept", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
+            var totalCount = xhr.getResponseHeader("X-Count");
+            console.log(totalCount);
             var json = JSON.parse(xhr.responseText);
+            
+            handleUsersPagination(totalCount, pageNo);
+            
+            var tableBody = document.getElementById("user-list-table-body");
+            tableBody.innerHTML = "";
             
             json.forEach(function(element) {
                 var trElement = document.createElement("tr");
@@ -58,7 +66,7 @@ function getUsers() {
                 gradeElement.innerHTML = element.grade;
                 trElement.appendChild(gradeElement); 
                 
-                document.getElementById("user-list-table-body").appendChild(trElement);      
+                tableBody.appendChild(trElement);      
             
                 console.log(element);            
             });
@@ -66,6 +74,25 @@ function getUsers() {
         }
     };
     xhr.send();
+}
+
+function handleUsersPagination(totalCount, currentPageNo) {
+    var paginationElement = document.getElementById("pagination");
+    paginationElement.innerHTML = "";
+    
+    var numberOfPages = Math.ceil(totalCount / PAGE_SIZE);
+    for (var pageNo = 1; pageNo <= numberOfPages; pageNo++) {
+        var buttonElement = document.createElement("input");
+        buttonElement.setAttribute("type", "button");
+        buttonElement.setAttribute("value", pageNo);
+        buttonElement.setAttribute("onclick", "getUsers(" + pageNo + ");");
+        if (pageNo == currentPageNo) {
+            buttonElement.setAttribute("disabled", "disabled");
+        }
+        
+        paginationElement.appendChild(buttonElement);    
+    }
+    
 }
 
 function retrieveUserById() {
